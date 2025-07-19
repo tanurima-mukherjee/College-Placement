@@ -1,66 +1,70 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Header = ({ user, toggleDropdown, isDropdownOpen, handleLogout, navigate }) => {
-  // Defensive fallback
-  const safeUser = user || {};
-
-  // Compute profile letter
-  const profileLetter =
-    safeUser.name && safeUser.name.length > 0
-      ? safeUser.name.charAt(0).toUpperCase()
-      : safeUser.email && safeUser.email.length > 0
-      ? safeUser.email.charAt(0).toUpperCase()
-      : '?';
-
-  // Use avatar or profilePicture field
-  const rawProfilePicture =
-    safeUser.profilePicture || safeUser.avatar || null;
-
-  // Compute the absolute URL safely
-  const profilePictureUrl = rawProfilePicture
-    ? rawProfilePicture.startsWith('http')
-      ? rawProfilePicture
-      : `http://localhost:3001${rawProfilePicture}`
-    : null;
+const Header = ({ userName, toggleDropdown, isDropdownOpen, handleLogout }) => {
+  const navigate = useNavigate();
+  const name = userName || 'User';
+  const profileLetter = name.charAt(0).toUpperCase();
 
   return (
-    <header className="bg-gray-900 text-gray-100 px-4 py-4 flex justify-between items-center relative z-10">
-      <div className="text-sm sm:text-base md:text-lg font-medium max-w-[50vw] sm:max-w-[60vw] truncate">
-        Welcome, {safeUser.name || safeUser.email || 'User'}
-      </div>
+    <header className="bg-blue-900 text-white shadow-md z-50 relative">
+      <div className="container mx-auto flex justify-between items-center py-4 px-6">
 
-      <div className="relative z-20 flex-shrink-0 ml-2 sm:ml-4">
-        <div
-          className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-blue-500 flex items-center justify-center cursor-pointer text-white text-lg sm:text-xl font-bold overflow-hidden"
-          onClick={toggleDropdown}
-        >
-          {profilePictureUrl ? (
-            <img
-              src={profilePictureUrl}
-              alt="Profile"
-              className="w-full h-full object-cover rounded-full"
-            />
-          ) : (
-            <span>{profileLetter}</span>
-          )}
+        {/* Logo + Portal Name */}
+        <div className="flex items-center gap-3">
+          <img
+            src="/logo.png" // 🔁 Replace this path with your actual logo path
+            alt="College Logo"
+            className="h-10 w-10 object-contain"
+          />
+          <h1 className="text-xl sm:text-2xl font-semibold">
+            Placement Cell Portal
+          </h1>
         </div>
 
-        {isDropdownOpen && (
-          <div className="absolute top-12 sm:top-14 md:top-16 right-0 bg-white shadow-lg rounded-lg w-40 flex flex-col z-50">
-            <button
-              onClick={() => navigate('/profile')}
-              className="px-4 py-3 text-left text-sm text-gray-800 hover:bg-gray-100"
-            >
-              Profile View
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-3 text-left text-sm text-gray-800 hover:bg-gray-100"
-            >
-              Logout
-            </button>
+        {/* Right Side: Nav Links + Welcome + Profile */}
+        <div className="flex items-center gap-6">
+          {/* Navigation Links */}
+          <nav className="hidden md:flex space-x-5 text-sm sm:text-base">
+            <a href="/" className="hover:text-yellow-300">Home</a>
+            <a href="#about" className="hover:text-yellow-300">About</a>
+            <a href="#students" className="hover:text-yellow-300">Students</a>
+            <a href="#recruiters" className="hover:text-yellow-300">Recruiters</a>
+            <a href="#contact" className="hover:text-yellow-300">Contact</a>
+          </nav>
+
+          {/* Welcome message */}
+          <div className="hidden sm:block text-yellow-300 font-medium truncate max-w-[200px]">
+            Welcome, {name}
           </div>
-        )}
+
+          {/* Profile icon with dropdown */}
+          <div className="relative">
+            <div
+              className="w-10 h-10 bg-white text-blue-900 rounded-full flex items-center justify-center text-lg font-bold cursor-pointer"
+              onClick={toggleDropdown}
+            >
+              {profileLetter}
+            </div>
+
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-12 bg-white text-black rounded-lg shadow-md w-40 z-50">
+                <button
+                  onClick={() => navigate('/profile')}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                >
+                  Profile View
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </header>
   );

@@ -18,6 +18,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Profile from "./pages/Profile"; 
 import EditFaculty from './pages/EditFaculty';
+import Header from './components/Header'; // or wherever it's located
 
 // ✅ Optional: Add React Query DevTools
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
